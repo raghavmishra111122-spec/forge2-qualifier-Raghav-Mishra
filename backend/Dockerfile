@@ -21,18 +21,22 @@ WORKDIR /app
 # Copy application files
 COPY . .
 
+# Copy env template to .env so Laravel has it
+RUN cp .env.example .env
+
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs
 
 # Configure Laravel storage and cache directories
-RUN mkdir -p bootstrap/cache storage/framework/sessions storage/framework/views storage/framework/cache/data storage/logs
-RUN chmod -R 777 storage bootstrap/cache
-
-# Generate key and prepare DB
-RUN php artisan key:generate
+RUN mkdir -p bootstrap/cache storage/framework/sessions storage/framework/views storage/framework/cache/data storage/logs database
 RUN touch database/database.sqlite
-RUN php artisan migrate --seed --force
+RUN chmod -R 777 storage bootstrap/cache database
 
-# Expose port and start server
+# Generate key
+RUN php artisan key:generate
+
+# Expose port
 EXPOSE 8000
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+
+# Run migrations and start server at runtime
+CMD ["sh", "-c", "php artisan migrate --seed --force && php artisan serve --host=0.0.0.0 --port=8000"]
