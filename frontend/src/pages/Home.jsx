@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchBoards } from '../services/api';
+import { fetchBoards, deleteBoard } from '../services/api';
 import Sidebar from '../components/Sidebar';
 import { LoadingOverlay, ErrorMessage } from '../components/common/Spinner';
 
@@ -19,6 +19,16 @@ export default function HomePage({ boards, setBoards }) {
       setError(err.response?.data?.message || 'Failed to load boards');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeleteBoard = async (boardId) => {
+    if (!window.confirm('Are you sure you want to delete this board?')) return;
+    try {
+      await deleteBoard(boardId);
+      setBoards((prev) => prev.filter((b) => b.id !== boardId));
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to delete board');
     }
   };
 
@@ -69,6 +79,24 @@ export default function HomePage({ boards, setBoards }) {
                   >
                     <div className="board-card__header">
                       <h3 className="board-card__title">{board.title}</h3>
+                      <button
+                        className="board-card__delete-btn"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteBoard(board.id);
+                        }}
+                        style={{
+                          background: 'transparent',
+                          border: 'none',
+                          color: 'var(--danger)',
+                          fontSize: '14px',
+                          cursor: 'pointer',
+                          padding: '4px'
+                        }}
+                        title="Delete Board"
+                      >
+                        🗑️
+                      </button>
                     </div>
                     <p className="board-card__description">
                       {board.description || 'No description'}
