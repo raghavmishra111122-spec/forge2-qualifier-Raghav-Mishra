@@ -29,8 +29,8 @@ RUN mkdir -p bootstrap/cache storage/framework/sessions storage/framework/views 
 RUN touch database/database.sqlite
 RUN chmod -R 777 storage bootstrap/cache database
 
-# Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs
+# Install PHP dependencies (including dev dependencies for seeders/faker)
+RUN composer install --optimize-autoloader --ignore-platform-reqs
 
 # Generate key
 RUN php artisan key:generate
