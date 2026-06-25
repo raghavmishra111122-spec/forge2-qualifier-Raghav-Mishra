@@ -7,7 +7,7 @@ Write-Host "⚡ Starting ZenFlow Kanban Backend (Laravel API)..." -ForegroundCol
 Start-Process php -ArgumentList "backend/artisan serve --port=8000" -NoNewWindow
 
 Write-Host "⚡ Starting ZenFlow Kanban Frontend (React Vite)..." -ForegroundColor Cyan
-Start-Process npm -ArgumentList "run dev" -WorkingDirectory frontend -NoNewWindow
+Start-Process cmd -ArgumentList "/c npm run dev" -WorkingDirectory frontend -NoNewWindow
 
 Write-Host "✅ Both servers are booting!" -ForegroundColor Green
 Write-Host "- API Endpoint: http://localhost:8000/api" -ForegroundColor Yellow
