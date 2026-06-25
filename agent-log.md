@@ -103,7 +103,7 @@ Below is the unedited transcription of the conversation threads in the Slack cha
 
 ### Channel: `#sprint-main`
 
-**[Hermes]** (Memory recalled fact: `repo is forge2-qualifier-priya`)
+**[Hermes]** (Memory recalled fact: `repo is forge2-qualifier-Raghav-Mishra`)
 > **What I Did**
 > - Finished the React board views, sidebar, and forms.
 > - Integrated colored tag labels, member selection avatars, and dynamic overdue due-date flags.
