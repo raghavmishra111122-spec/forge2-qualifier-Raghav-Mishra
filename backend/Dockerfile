@@ -21,16 +21,16 @@ WORKDIR /app
 # Copy application files
 COPY . .
 
-# Copy env template to .env so Laravel has it
+# Copy env template to .env
 RUN cp .env.example .env
 
-# Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs
-
-# Configure Laravel storage and cache directories
+# Create Laravel storage and cache directories BEFORE running composer install
 RUN mkdir -p bootstrap/cache storage/framework/sessions storage/framework/views storage/framework/cache/data storage/logs database
 RUN touch database/database.sqlite
 RUN chmod -R 777 storage bootstrap/cache database
+
+# Install PHP dependencies
+RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs
 
 # Generate key
 RUN php artisan key:generate
