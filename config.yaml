@@ -1,0 +1,38 @@
+# Hermes Agent Orchestrator Configuration
+
+agent:
+  name: "Hermes"
+  role: "Orchestrator & Project Planner"
+  memory:
+    enabled: true
+    path: "~/.hermes/memory"
+    max_facts: 1000
+
+model:
+  provider: "google"
+  model_id: "gemini-2.5-flash"
+  api_key: "ENV_GEMINI_API_KEY"
+  base_url: "https://generativelanguage.googleapis.com/v1beta/openai/"
+  max_tokens: 4096
+  temperature: 0.2
+
+slack:
+  enabled: true
+  bot_token: "ENV_SLACK_BOT_TOKEN"
+  app_token: "ENV_SLACK_APP_TOKEN"
+  channels:
+    main: "#sprint-main"
+    coder: "#agent-coder"
+    logs: "#agent-log"
+
+skills:
+  directory: "./skills"
+  autoload:
+    - "status-report"
+
+cron:
+  enabled: true
+  jobs:
+    - schedule: "*/10 * * * *"
+      task: "Gather active board ticket counts and post a one-line progress update to #agent-log"
+      output: "~/.hermes/cron/output/progress.log"

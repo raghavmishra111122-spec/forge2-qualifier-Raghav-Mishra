@@ -1,0 +1,41 @@
+{
+  "name": "zenflow-kanban",
+  "version": "1.0.0",
+  "description": "Premium Kanban board application with Laravel API and React frontend",
+  "workspace": {
+    "path": "./",
+    "allow_commands": true
+  },
+  "agents": {
+    "brain": {
+      "role": "Orchestrator — receives tasks, plans execution steps, delegates coding",
+      "provider": "google",
+      "model": "gemini-2.5-flash",
+      "temperature": 0.1
+    },
+    "hands": {
+      "role": "Coder — writes and modifies code, runs local terminal tests",
+      "provider": "ollama",
+      "model": "qwen2.5-coder",
+      "temperature": 0.0
+    }
+  },
+  "channels": {
+    "slack": {
+      "enabled": true,
+      "mode": "socket",
+      "channel_id": "C0XXXXXXX",
+      "mention_required": true,
+      "appToken": { "source": "env", "provider": "default", "id": "SLACK_APP_TOKEN" },
+      "botToken": { "source": "env", "provider": "default", "id": "SLACK_BOT_TOKEN" }
+    }
+  },
+  "model_routing": {
+    "default": "gemini-2.5-flash",
+    "fallback": "qwen2.5-coder",
+    "api_mode": "chat_completions"
+  },
+  "plugins": [
+    "@openclaw/slack"
+  ]
+}
